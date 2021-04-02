@@ -18,8 +18,8 @@ public class mainProgram {
 		 Scanner myObj = new Scanner(System.in);
 		 System.out.print("Hello, welcome to the hotel thingy.\n"); 
 		 while(!loginDone) {
-			 System.out.print("please enter your username, or type \"regiter\" to register a new account.\n"); 
-			 String userInput = myObj.nextLine();
+			 System.out.print("please enter your username, or type \"register\" to register a new account.\n"); 
+			 String userInput = myObj.nextLine().toLowerCase().trim();
 			 while(!userInput.equals("register") && !validateUserName(userInput)) {
 				 System.out.print("invalid username, please try again\n"); 
 				 userInput = myObj.nextLine();
