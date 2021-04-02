@@ -3,6 +3,11 @@ import java.util.Scanner;
 public class mainProgram {
 	private boolean loginDone = false;
 	 public static void main(String args[]) {
+		 try {
+				Class.forName("org.postgresql.Driver");
+			}catch(ClassNotFoundException e) {
+				System.out.print("JDBC driver not found "); 
+			}
 		 mainProgram program = new mainProgram();
 		 program.loginProcess();
 		 
