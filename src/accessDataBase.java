@@ -264,12 +264,6 @@ public class accessDataBase {
 		}
 		return "";
 	}
-	String getRooms(int brandID, int hotelID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	String getOneRoom(int brandID, int hotelID, int roomNum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 }

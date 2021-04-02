@@ -5,7 +5,6 @@ public class customerPage {
 	private String currentLevel = "parentHotel";
 	private int brandID = 0;
 	private int hotelID = 0;
-	private int roomNum = 0;
 	customerPage(){
 		System.out.print("hello, you logged in as a customer\n"); 
 		System.out.print("You can see all command lines by typing /help \n"); 
@@ -55,26 +54,31 @@ public class customerPage {
 		  			displayHotels();
 		  		}else if(hotelID == 0) {
 		  			hotelID = integerIForID;
-		  			displayRooms();
-		  		}else if(roomNum == 0) {
-		  			roomNum = integerIForID;
-		  			displayOneRoom();
+		  		}else {
+		  			System.out.print("can not go deeper\n"); 
 		  		}
 		  		break;
 		  	case "brands":
 		  		displayBrands();
 		  		brandID = 0;
 		  		hotelID = 0;
-		  		roomNum = 0;
 		  		break;
 		  	case "back":
-			    // code block
+			    if(brandID == 0) {
+			    	System.out.print("can not go back more\n"); 
+			    }else if (hotelID == 0) {
+			    	displayBrands();
+			    	brandID = 0;
+			    }else {
+			    	displayHotels();
+			    	hotelID = 0;
+			    }
 		  		break;
 		  	case "book":
-		  		if(roomNum == 0) {
-		  			System.out.print("Please goto a room first\n"); 
+		  		if(hotelID == 0) {
+		  			System.out.print("Please goto a hotel first\n"); 
 		  		}else {
-		  			
+		  			bookRoom();
 		  		}
 		  		break;
 		  	case "exit":
@@ -103,11 +107,37 @@ public class customerPage {
 		System.out.print(accessDataBase.getInstance().getHotels(brandID));
 	}
 	
-	private void displayRooms() {
-		System.out.print(accessDataBase.getInstance().getRooms(brandID,hotelID));
-	}
-	
-	private void displayOneRoom() {
-		System.out.print(accessDataBase.getInstance().getOneRoom(brandID,hotelID,roomNum));
+	private void bookRoom() {
+		boolean proceed = false;
+		String checkInDate;
+		String checkOutDate;
+		String paymentMethod = "";
+		String credit;
+		Scanner myObj = new Scanner(System.in);
+		String userInput;
+		while(!proceed) {
+			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
+			checkInDate = myObj.nextLine();
+			System.out.print("You have checked in on the "+checkInDate+", do you confirm this? (yes/no)\n");
+			proceed =  myObj.nextLine().equals("yes");
+		}
+		proceed = false;
+		while(!proceed) {
+			System.out.print("You have successfully checked in, now choose you check-out date: (dd/mm/yyyy)\n");
+			checkOutDate = myObj.nextLine();
+			System.out.print("You have checked out on the "+checkOutDate+", do you confirm this? (yes/no)\n");
+			proceed =  myObj.nextLine().equals("yes");
+		}
+		proceed = false;
+		do {
+			System.out.print("Would you like to pay online OR in person ? (online/person)\n");
+			checkInDate = myObj.nextLine();
+		}while(!paymentMethod.equals("online")||!paymentMethod.equals("person"));
+		while(!proceed) {
+			System.out.print("Please insert you credit card number\n");
+			credit = myObj.nextLine();
+			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
+			proceed =  myObj.nextLine().equals("yes");
+		}
 	}
 }
