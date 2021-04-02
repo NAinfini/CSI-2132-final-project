@@ -40,46 +40,62 @@ public class mainProgram {
 		 return accessDataBase.getInstance().getUserType(userInput);
 	 }
 	 private boolean registerUser() {
-		 String hotel_ID;
-		 String firstName;
-		 String lastName; 
-		 String sin;
-		 String username;
-		 String password;
-		 String aptNumber;
-		 String streetNum;
-		 String streetName;
-		 String city;
-		 String province;
-		 String country;
-		 String postal;
+		 boolean inputValid = false;
+		 boolean inputNotNull = false;
+		 String hotel_ID = null;
+		 String firstName= null;
+		 String lastName= null; 
+		 String sin= null;
+		 String username= null;
+		 String password= null;
+		 String aptNumber= null;
+		 String streetNum= null;
+		 String streetName= null;
+		 String city= null;
+		 String province= null;
+		 String country= null;
+		 String postal= null;
 		 Scanner myObj = new Scanner(System.in);
-		 System.out.print("enter hotel id here\n"); 
-		 hotel_ID = myObj.nextLine();
-		 System.out.print("enter first name here\n"); 
-		 firstName = myObj.nextLine();
-		 System.out.print("enter last name here\n"); 
-		 lastName = myObj.nextLine();
-		 System.out.print("enter sin here\n"); 
-		 sin = myObj.nextLine();
-		 System.out.print("enter username here\n"); 
-		 username = myObj.nextLine();
-		 System.out.print("enter password here\n"); 
-		 password = myObj.nextLine();
-		 System.out.print("enter apt number here\n"); 
-		 aptNumber = myObj.nextLine();
-		 System.out.print("enter street number here\n"); 
-		 streetNum = myObj.nextLine();
-		 System.out.print("enter street name here\n"); 
-		 streetName = myObj.nextLine();
-		 System.out.print("enter city here\n"); 
-		 city = myObj.nextLine();
-		 System.out.print("enter province here\n"); 
-		 province = myObj.nextLine();
-		 System.out.print("enter country here\n"); 
-		 country = myObj.nextLine();
-		 System.out.print("enter postal here\n"); 
-		 postal = myObj.nextLine();
+		 while(!inputValid || !inputNotNull) {
+			 System.out.print("enter hotel id here\n"); 
+			 hotel_ID = myObj.nextLine();
+			 System.out.print("enter first name here\n"); 
+			 firstName = myObj.nextLine();
+			 System.out.print("enter last name here\n"); 
+			 lastName = myObj.nextLine();
+			 System.out.print("enter sin here\n"); 
+			 sin = myObj.nextLine();
+			 System.out.print("enter username here\n"); 
+			 username = myObj.nextLine();
+			 System.out.print("enter password here\n"); 
+			 password = myObj.nextLine();
+			 System.out.print("enter apt number here\n"); 
+			 aptNumber = myObj.nextLine();
+			 System.out.print("enter street number here\n"); 
+			 streetNum = myObj.nextLine();
+			 System.out.print("enter street name here\n"); 
+			 streetName = myObj.nextLine();
+			 System.out.print("enter city here\n"); 
+			 city = myObj.nextLine();
+			 System.out.print("enter province here\n"); 
+			 province = myObj.nextLine();
+			 System.out.print("enter country here\n"); 
+			 country = myObj.nextLine();
+			 System.out.print("enter postal here\n"); 
+			 postal = myObj.nextLine();
+			 if(isInteger(sin) && isInteger(hotel_ID) && isInteger(aptNumber) && isInteger(streetNum)) {
+				 inputValid=true;
+			 }else {
+				 System.out.print("sin,hotel_ID,apt number,street number has to be integer\n"); 
+			 }
+			 if( !hotel_ID.isBlank() && !firstName.isBlank() && !lastName.isBlank() && !country.isBlank()
+					 && !city.isBlank() && !streetName.isBlank() && !username.isBlank() && !password.isBlank()) {
+				 inputNotNull=true;
+			 }else {
+				 System.out.print("hotel ID, first last name, country, city, street name, username and password can not be null\n"); 
+			 }
+		 }
+		 
 		 try {
 			 accessDataBase.getInstance().registerUser(hotel_ID,firstName,lastName,
 					 accessDataBase.getInstance().registerAddress(aptNumber,streetNum,streetName,city,province,country,postal)
@@ -92,5 +108,27 @@ public class mainProgram {
 		 
 		 
 	 }
-	 
+	 private static boolean isInteger(String str) {
+		    if (str == null) {
+		        return false;
+		    }
+		    int length = str.length();
+		    if (length == 0) {
+		        return false;
+		    }
+		    int i = 0;
+		    if (str.charAt(0) == '-') {
+		        if (length == 1) {
+		            return false;
+		        }
+		        i = 1;
+		    }
+		    for (; i < length; i++) {
+		        char c = str.charAt(i);
+		        if (c < '0' || c > '9') {
+		            return false;
+		        }
+		    }
+		    return true;
+		}	 
 }
