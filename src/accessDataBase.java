@@ -1,3 +1,4 @@
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 public class accessDataBase {
 	private static accessDataBase dataBase = null;
@@ -189,5 +190,86 @@ public class accessDataBase {
 		return false;
 	}
 
-
+	//return all brands as a string
+	String getBrands() {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			String result = "";
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT * FROM hotel.parenthotel");
+			ResultSetMetaData rsMeta = rs.getMetaData();
+            int count = rsMeta.getColumnCount();
+            int i, j = 1;
+            result += "\n| ";
+            while (j <= count) {
+                String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
+                String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
+                result += formatedValue + "| ";
+                j++;
+            }
+            result += "\n" + new String(new char[result.length()]).replace("\0", "-");
+            while (rs.next()) {
+                i = 1;
+                result += "\n| ";
+                while (i <= count) {
+                    String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
+                    String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
+                    result += formatedValue + "| ";
+                    i++;
+                }
+            }
+            result += "\n";
+            rs.close();
+            stmt.close();
+            return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	String getHotels(int brandID) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			String result = "";
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT * FROM hotel.hotel where brand_id = \'"+brandID+"\'");
+			ResultSetMetaData rsMeta = rs.getMetaData();
+            int count = rsMeta.getColumnCount();
+            int i, j = 1;
+            result += "\n| ";
+            while (j <= count) {
+                String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
+                String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
+                result += formatedValue + "| ";
+                j++;
+            }
+            result += "\n" + new String(new char[result.length()]).replace("\0", "-");
+            while (rs.next()) {
+                i = 1;
+                result += "\n| ";
+                while (i <= count) {
+                    String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
+                    String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
+                    result += formatedValue + "| ";
+                    i++;
+                }
+            }
+            rs.close();
+            stmt.close();
+            result += "\n";
+            return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	String getRooms(int brandID, int hotelID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	String getOneRoom(int brandID, int hotelID, int roomNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
