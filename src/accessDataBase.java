@@ -1,17 +1,20 @@
 import java.sql.*;
 public class accessDataBase {
 	private Statement stmt;
+	
+	
+	
 	accessDataBase(){
-		try (Connection conn = DriverManager.getConnection(
-		               "jdbc:postgresql://web0.site.uottawa.ca:15432/msui005 ",
-		               "msui005", "Z4321zxe");
-		){
-			stmt = conn.createStatement();
-			 
-		 
-		 } catch(SQLException ex) {
-		   ex.printStackTrace();
-		 }
+		try {
+			Class.forName("org.postgresql.Driver");
+		}catch(ClassNotFoundException e) {
+			System.out.print("JDBC driver not found "); 
+		}
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/msui005","msui005","Z4321zxe")){
+			stmt = conn.createStatement();			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getPerson(){
