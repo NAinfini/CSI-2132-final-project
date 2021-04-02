@@ -9,6 +9,7 @@ public class accessDataBase {
 			System.out.print("JDBC driver not found "); 
 		}
 	}
+	//Creates only 1 instance of access to database per process
 	public static accessDataBase getInstance()
     {
         if (dataBase == null)
@@ -16,6 +17,7 @@ public class accessDataBase {
   
         return dataBase;
     }
+	//validates of the username is in the database
 	boolean validateUserName(String userName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
@@ -36,6 +38,7 @@ public class accessDataBase {
 		}
 		return false;
 	 }
+	//validates if the user is a customer or an employee
 	String getUserType(String userInput) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
@@ -70,6 +73,7 @@ public class accessDataBase {
 		}
 		return "";
 	}
+	//add address to the database
 	String registerAddress(String aptNumber,String streetNum,String streetName,String city,String province,String country,String postal){
 		String addressID = getNextIndex("hotel.address","address_id");
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -82,6 +86,8 @@ public class accessDataBase {
 		}
 		return addressID;
 	}
+	
+	//add current user to database, uses registerAddress
 	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
 		String personID = getNextIndex("hotel.person","person_id");
@@ -94,6 +100,8 @@ public class accessDataBase {
 			e.printStackTrace();
 		}
 	}
+	
+	//get next empty ID for dynamic allocation
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
@@ -135,6 +143,8 @@ public class accessDataBase {
 		System.out.println("Empty address id");
 		return "";
 	}
+	
+	//check if the hotel id exists before inserting person to ensure no error
 	boolean validateHotelID(String hotelID) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
@@ -155,6 +165,8 @@ public class accessDataBase {
 		}
 		return false;
 	}
+	
+	//check if password matches username	
 	boolean validatePassword(String username, String password) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	

@@ -3,16 +3,12 @@ import java.util.Scanner;
 public class mainProgram {
 	private boolean loginDone = false;
 	 public static void main(String args[]) {
-		 try {
-				Class.forName("org.postgresql.Driver");
-			}catch(ClassNotFoundException e) {
-				System.out.print("JDBC driver not found "); 
-			}
 		 mainProgram program = new mainProgram();
 		 program.loginProcess();
 		 
 
 	 }
+	 //log in process
 	 private void loginProcess() {
 		 String userName;
 		 Scanner myObj = new Scanner(System.in);
@@ -39,23 +35,26 @@ public class mainProgram {
 				 if(getUserType(userName).equals("customer")) {
 					 loginDone = true;
 					 customerPage customer= new customerPage();
-					 System.out.print("hello, you logged in as customer\n"); 
+					 
 				 }else if(getUserType(userName).equals("employee")) {
 					 loginDone = true;
 					 employeePage employee = new employeePage();
-					 System.out.print("hello, you logged in as employee\n"); 
+					
 				 }else {
 					 System.out.print("Your type doesnt exist in database, something went wrong\n"); 
 				 }
 			 }
 		 }
 	 }
+	
 	 private boolean validateUserName(String userName) {
 		 return accessDataBase.getInstance().validateUserName(userName);
 	 }
 	 private String getUserType(String userInput) {
 		 return accessDataBase.getInstance().getUserType(userInput);
 	 }
+	 
+	 //take user inputs and register as a new user
 	 private boolean registerUser() {
 		 boolean inputValid = false;
 		 boolean inputNotNull = false;
@@ -76,42 +75,42 @@ public class mainProgram {
 		 String postal= null;
 		 Scanner myObj = new Scanner(System.in);
 		 while(!inputValid || !inputNotNull || !userNameValid || !hotelIDValid) {
-			 System.out.print("enter hotel id here\n"); 
+			 System.out.print("enter hotel id here: \n"); 
 			 hotel_ID = myObj.nextLine();
-			 System.out.print("enter first name here\n"); 
+			 System.out.print("enter first name here: \n"); 
 			 firstName = myObj.nextLine();
-			 System.out.print("enter last name here\n"); 
+			 System.out.print("enter last name here: \n"); 
 			 lastName = myObj.nextLine();
-			 System.out.print("enter sin here\n"); 
+			 System.out.print("enter sin here: \n"); 
 			 sin = myObj.nextLine();
-			 System.out.print("enter username here\n"); 
+			 System.out.print("enter username here: \n"); 
 			 username = myObj.nextLine();
-			 System.out.print("enter password here\n"); 
+			 System.out.print("enter password here: \n"); 
 			 password = myObj.nextLine();
-			 System.out.print("enter apt number here\n"); 
+			 System.out.print("enter apt number here: \n"); 
 			 aptNumber = myObj.nextLine();
-			 System.out.print("enter street number here\n"); 
+			 System.out.print("enter street number here: \n"); 
 			 streetNum = myObj.nextLine();
-			 System.out.print("enter street name here\n"); 
+			 System.out.print("enter street name here: \n"); 
 			 streetName = myObj.nextLine();
-			 System.out.print("enter city here\n"); 
+			 System.out.print("enter city here: \n"); 
 			 city = myObj.nextLine();
-			 System.out.print("enter province here\n"); 
+			 System.out.print("enter province here: \n"); 
 			 province = myObj.nextLine();
-			 System.out.print("enter country here\n"); 
+			 System.out.print("enter country here: \n"); 
 			 country = myObj.nextLine();
-			 System.out.print("enter postal here\n"); 
+			 System.out.print("enter postal here: \n"); 
 			 postal = myObj.nextLine();
 			 if(isInteger(sin) && isInteger(hotel_ID) && isInteger(aptNumber) && isInteger(streetNum)) {
 				 inputValid=true;
 			 }else {
-				 System.out.print("sin,hotel_ID,apt number,street number has to be integer\n"); 
+				 System.out.print("sin,hotel_ID,apt number,street number has to be integer. \n"); 
 			 }
 			 if( !hotel_ID.isBlank() && !firstName.isBlank() && !lastName.isBlank() && !country.isBlank()
 					 && !city.isBlank() && !streetName.isBlank() && !username.isBlank() && !password.isBlank()) {
 				 inputNotNull=true;
 			 }else {
-				 System.out.print("hotel ID, first last name, country, city, street name, username and password can not be null\n"); 
+				 System.out.print("hotel ID, first last name, country, city, street name, username and password can not be null. \n"); 
 			 }
 			 if(!accessDataBase.getInstance().validateUserName(username)) {
 				 userNameValid = true;
@@ -137,6 +136,8 @@ public class mainProgram {
 		 
 		 
 	 }
+	
+	 //check if a string is an int
 	 private boolean isInteger(String str) {
 		    if (str == null) {
 		        return false;
@@ -160,6 +161,7 @@ public class mainProgram {
 		    }
 		    return true;
 		}	 
+	 
 	 private boolean validatePassword(String username, String password) {
 		 return accessDataBase.getInstance().validatePassword(username,password);
 	 }
