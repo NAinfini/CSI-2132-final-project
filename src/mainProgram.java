@@ -42,6 +42,8 @@ public class mainProgram {
 	 private boolean registerUser() {
 		 boolean inputValid = false;
 		 boolean inputNotNull = false;
+		 boolean userNameValid = false;
+		 boolean hotelIDValid = false;
 		 String hotel_ID = null;
 		 String firstName= null;
 		 String lastName= null; 
@@ -56,7 +58,7 @@ public class mainProgram {
 		 String country= null;
 		 String postal= null;
 		 Scanner myObj = new Scanner(System.in);
-		 while(!inputValid || !inputNotNull) {
+		 while(!inputValid || !inputNotNull || !userNameValid || !hotelIDValid) {
 			 System.out.print("enter hotel id here\n"); 
 			 hotel_ID = myObj.nextLine();
 			 System.out.print("enter first name here\n"); 
@@ -93,6 +95,16 @@ public class mainProgram {
 				 inputNotNull=true;
 			 }else {
 				 System.out.print("hotel ID, first last name, country, city, street name, username and password can not be null\n"); 
+			 }
+			 if(!accessDataBase.getInstance().validateUserName(username)) {
+				 userNameValid = true;
+			 }else {
+				 System.out.print("username already in use\n");
+			 }
+			 if(accessDataBase.getInstance().validateHotelID(hotel_ID)) {
+				 hotelIDValid=true;
+			 }else {
+				 System.out.print("invalid hotel ID\n"); 
 			 }
 		 }
 		 

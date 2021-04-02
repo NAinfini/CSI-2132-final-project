@@ -22,7 +22,7 @@ public class accessDataBase {
 			ResultSet rs;
 			rs = stmt.executeQuery("SELECT username FROM hotel.person");
 			while (rs.next()) {
-				if(rs.getString(0).equals(userName)) {
+				if(rs.getString(1).equals(userName)) {
 					rs.close(); 
 					stmt.close();
 					return true;
@@ -41,11 +41,18 @@ public class accessDataBase {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
 			ResultSet rs;
-			rs = stmt.executeQuery("select person_id from customer where exists(SELECT userID FROM hotel.person where username = "+ userInput+")");
-			if(rs.getString(0).isBlank()) {
-				rs = stmt.executeQuery("select person_id from employee where exists(SELECT userID FROM hotel.person where username = "+ userInput+")");
-				if(rs.getString(0).isBlank()) {
-					System.out.print("Something went wrong."); 
+			rs = stmt.executeQuery("select person_id from hotel.customer where exists(SELECT person_id FROM hotel.person where username = \'"+ userInput+"\')");
+			String result = "";
+			if (rs.next()) {
+				result = rs.getString(1).toString();
+			}
+			if(result.isBlank()) {
+				rs = stmt.executeQuery("select person_id from hotel.employee where exists(SELECT person_id FROM hotel.person where username = \'"+ userInput+"\')");
+				if (rs.next()) {
+					result = rs.getString(1).toString();
+				}
+				if(result.isBlank()) {
+					System.out.print("Something went wrong,your type doesnt exist.\n"); 
 					rs.close(); 
 					stmt.close();
 					return "";
@@ -62,7 +69,6 @@ public class accessDataBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("Something went wrong, please try again"); 
 		return "";
 	}
 
@@ -79,9 +85,17 @@ public class accessDataBase {
 		return addressID;
 	}
 
-	public void registerUser(String hotel_ID, String firstName, String lastName, String Address, String sin,
+	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
-		
+		String personID = getNextIndex("hotel.person","person_id");
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			stmt.executeUpdate("INSERT INTO hotel.person(person_id,hotel_id, first_name, last_name, address_id, sin, username, password) \r\n"
+					+ "VALUES ("+personID+","+hotel_ID+ ",\'" +firstName+ "\',\'" +lastName+ "\'," +address+ "," +sin+ ",\'" +username+ "\',\'" +password+"\');"); 
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -124,4 +138,28 @@ public class accessDataBase {
 		System.out.println("Empty address id");
 		return "";
 	}
+	boolean validateHotelID(String hotelID) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT hotel_id FROM hotel.hotel");
+			while (rs.next()) {
+				if(rs.getString(1).equals(hotelID)) {
+					rs.close(); 
+					stmt.close();
+					return true;
+				}
+			} 
+			rs.close(); 
+			stmt.close();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.print("Something went wrong, please try again"); 
+		return false;
+	}
+
+
+
 }
