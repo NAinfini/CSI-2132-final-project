@@ -1,25 +1,26 @@
 import java.sql.*;
 public class accessDataBase {
+	private static accessDataBase dataBase = null;
 	private Statement stmt;
 	
-	
-	
-	accessDataBase(){
+	private accessDataBase(){
+	}
+	public static accessDataBase getInstance()
+    {
+        if (dataBase == null)
+        	dataBase = new accessDataBase();
+  
+        return dataBase;
+    }
+	public String getPerson(){
 		try {
 			Class.forName("org.postgresql.Driver");
 		}catch(ClassNotFoundException e) {
 			System.out.print("JDBC driver not found "); 
 		}
-		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/msui005","msui005","Z4321zxe")){
-			stmt = conn.createStatement();			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public String getPerson(){
-		ResultSet rs;
-		try {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
 			rs = stmt.executeQuery("SELECT * FROM hotel.person");
 			while (rs.next()) {
 				System.out.print("Column 1 returned: "); 
@@ -28,8 +29,7 @@ public class accessDataBase {
 			rs.close(); 
 			stmt.close();
 			return "";
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
