@@ -9,6 +9,7 @@ public class mainProgram {
 
 	 }
 	 private void loginProcess() {
+		 String userName;
 		 Scanner myObj = new Scanner(System.in);
 		 System.out.print("Hello, welcome to the hotel thingy.\n"); 
 		 while(!loginDone) {
@@ -21,14 +22,25 @@ public class mainProgram {
 			 if(userInput.equals("register")) {
 				 registerUser();
 			 }else {
-				 if(getUserType(userInput).equals("customer")) {
+				 userName = userInput;
+				 System.out.print("Enter password:\n"); 
+				 userInput = myObj.nextLine();
+				 while(!validatePassword(userName,userInput)) {
+					 System.out.print("Wrong password, try again:\n"); 
+					 System.out.print("Your username:"+userName+"\n"); 
+					 userInput = myObj.nextLine();
+				 }
+				 System.out.print("login successfull.\n"); 
+				 if(getUserType(userName).equals("customer")) {
 					 loginDone = true;
 					 customerPage customer= new customerPage();
-				 }else if(getUserType(userInput).equals("employee")) {
+					 System.out.print("hello, you logged in as customer\n"); 
+				 }else if(getUserType(userName).equals("employee")) {
 					 loginDone = true;
 					 employeePage employee = new employeePage();
+					 System.out.print("hello, you logged in as employee\n"); 
 				 }else {
-					 System.out.print("Your type doesnt exist in database, something went wrong"); 
+					 System.out.print("Your type doesnt exist in database, something went wrong\n"); 
 				 }
 			 }
 		 }
@@ -120,7 +132,7 @@ public class mainProgram {
 		 
 		 
 	 }
-	 private static boolean isInteger(String str) {
+	 private boolean isInteger(String str) {
 		    if (str == null) {
 		        return false;
 		    }
@@ -143,4 +155,8 @@ public class mainProgram {
 		    }
 		    return true;
 		}	 
+	 private boolean validatePassword(String username, String password) {
+		 return accessDataBase.getInstance().validatePassword(username,password);
+	 }
+
 }

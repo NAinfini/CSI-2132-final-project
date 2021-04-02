@@ -34,7 +34,6 @@ public class accessDataBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("Something went wrong, please try again"); 
 		return false;
 	 }
 	String getUserType(String userInput) {
@@ -71,7 +70,6 @@ public class accessDataBase {
 		}
 		return "";
 	}
-
 	String registerAddress(String aptNumber,String streetNum,String streetName,String city,String province,String country,String postal){
 		String addressID = getNextIndex("hotel.address","address_id");
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -84,7 +82,6 @@ public class accessDataBase {
 		}
 		return addressID;
 	}
-
 	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
 		String personID = getNextIndex("hotel.person","person_id");
@@ -156,10 +153,29 @@ public class accessDataBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("Something went wrong, please try again"); 
 		return false;
 	}
-
+	boolean validatePassword(String username, String password) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT password FROM hotel.person where username = \'"+username+"\';");
+			while (rs.next()) {
+				if(rs.getString(1).equals(password)) {
+					rs.close(); 
+					stmt.close();
+					return true;
+				}
+			} 
+			rs.close(); 
+			stmt.close();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.print("Something went wrong with the password, please try again\n"); 
+		return false;
+	}
 
 
 }
