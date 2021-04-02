@@ -40,7 +40,7 @@ public class accessDataBase {
 			ResultSet rs;
 			rs = stmt.executeQuery("SELECT username FROM hotel.person");
 			while (rs.next()) {
-				if(rs.equals(userName)) {
+				if(rs.toString().equals(userName)) {
 					rs.close(); 
 					stmt.close();
 					return true;
@@ -55,26 +55,32 @@ public class accessDataBase {
 		System.out.print("Something went wrong, please try again"); 
 		return false;
 	 }
-	boolean getUserType(String userInput) {
+	String getUserType(String userInput) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
 			ResultSet rs;
-			rs = stmt.executeQuery("SELECT userID FROM hotel.person");
-			while (rs.next()) {
-				if(rs.equals(userInput)) {
-					rs = stmt.executeQuery("IF EXISTS (SELECT userID FROM h WHERE TABLE_NAME = N'employee_ids')");
+			rs = stmt.executeQuery("select person_id from customer where exists(SELECT userID FROM hotel.person where username = "+ userInput+")");
+			if(rs.toString().isBlank()) {
+				rs = stmt.executeQuery("select person_id from employee where exists(SELECT userID FROM hotel.person where username = "+ userInput+")");
+				if(rs.toString().isBlank()) {
+					System.out.print("Something went wrong."); 
 					rs.close(); 
 					stmt.close();
-					return true;
+					return "";
+				}else {
+					rs.close(); 
+					stmt.close();
+					return "employee";
 				}
-			} 
-			rs.close(); 
-			stmt.close();
-			return false;
+			}else {
+				rs.close(); 
+				stmt.close();
+				return "customer";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.print("Something went wrong, please try again"); 
-		return false;
+		return "";
 	}
 }

@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class mainProgram {
-	accessDataBase database = null;
 	
 	 public static void main(String args[]) {
 		 mainProgram program = new mainProgram();
@@ -19,7 +18,7 @@ public class mainProgram {
 			 if(program.getUserType(userInput).equals("customer")) {
 				 customerPage customer= new customerPage();
 			 }else if(program.getUserType(userInput).equals("employee")) {
-				 
+				 employeePage employee = new employeePage();
 			 }else {
 				 System.out.print("Your type doesnt exist in database, something went wrong"); 
 			 }
@@ -27,12 +26,13 @@ public class mainProgram {
 	 }
 	 
 	 private boolean validateUserName(String userName) {
-		 return database.getInstance().validateUserName(userName);
+		 return accessDataBase.getInstance().validateUserName(userName);
+	 }
+	 private String getUserType(String userInput) {
+		 return accessDataBase.getInstance().getUserType(userInput);
 	 }
 	 private boolean registerUser() {
 		 return true;
 	 }
-	 private String getUserType(String userInput) {
-		 return database.getInstance().getUserType(userInput);
-	 }
+	 
 }
