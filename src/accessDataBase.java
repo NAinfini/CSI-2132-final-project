@@ -309,7 +309,11 @@ public class accessDataBase {
 	}
 	
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+=======
+	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
+>>>>>>> Stashed changes
 =======
 	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
 >>>>>>> Stashed changes

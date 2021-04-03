@@ -146,13 +146,19 @@ public class customerPage {
 			proceed =  myObj.nextLine().equals("yes");
 		}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
 =======
+=======
+>>>>>>> Stashed changes
 		if(accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod)) {
 			System.out.print("booking successful\n");
 		}else {
 			System.out.print("booking failed\n");
 		}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 	}
 }
