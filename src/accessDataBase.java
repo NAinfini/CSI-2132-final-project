@@ -346,10 +346,7 @@ public class accessDataBase {
 		String[] result = new String[2];
 
 
-		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
-			stmt = conn.createStatement();	
-			ResultSet rs;
-
+		try{
 			// Get first name
 			rs = stmt.executeQuery("SELECT p.first_name FROM hotel.person p "
 					+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
@@ -363,8 +360,6 @@ public class accessDataBase {
 			if(rs.next()) {
 				result[1] = rs.getString(1).toString();
 			}
-
-			stmt.close();
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
