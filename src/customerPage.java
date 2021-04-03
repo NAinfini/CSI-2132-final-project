@@ -123,14 +123,14 @@ public class customerPage {
 		Scanner myObj = new Scanner(System.in);
 		//not protected against invalid dates
 		while(!proceed) {
-			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
+			System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
 			checkInDate = myObj.nextLine();
 			System.out.print("You have checked in on the "+checkInDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
 		proceed = false;
 		while(!proceed) {
-			System.out.print("You have successfully checked in, now choose you check-out date: (dd/mm/yyyy)\n");
+			System.out.print("You have successfully checked in, now choose you check-out date: (yyyy-mm-dd)\n");
 			checkOutDate = myObj.nextLine();
 			System.out.print("You have checked out on the "+checkOutDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");

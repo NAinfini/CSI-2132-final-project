@@ -1,5 +1,7 @@
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class accessDataBase {
 	private static accessDataBase dataBase = null;
 	private Statement stmt;
@@ -101,7 +103,7 @@ public class accessDataBase {
 		return "";
 	}
 	//add current user to database, uses registerAddress
-	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
+	String registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
 		String personID = getNextIndex("hotel.person","person_id");
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -109,18 +111,13 @@ public class accessDataBase {
 			stmt.executeUpdate("INSERT INTO hotel.person(person_id,hotel_id, first_name, last_name, address_id, sin, username, password) \r\n"
 					+ "VALUES ("+personID+","+hotel_ID+ ",\'" +firstName+ "\',\'" +lastName+ "\'," +address+ "," +sin+ ",\'" +username+ "\',\'" +password+"\');"); 
 			stmt.close();
+			return personID;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return personID;
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
 	boolean addCustomer(String personID) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();
@@ -134,19 +131,12 @@ public class accessDataBase {
 		return false;
 	}
 	boolean addEmployee(String personID) {
-<<<<<<< HEAD
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-		LocalDateTime currentDate = LocalDateTime.now();  
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+			LocalDateTime now = LocalDateTime.now();
 			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO hotel.employee(person_id,registation_date) \r\n"
-					+ "VALUES ("+personID+"," + dtf.format(currentDate) +");");
-=======
-		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
-			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO hotel.employee(person_id) \r\n"
-					+ "VALUES ("+personID+");");
->>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
+			stmt.executeUpdate("INSERT INTO hotel.employee(person_id,registration_date) \r\n"
+					+ "VALUES ("+personID+",\'"+dtf.format(now)+"\');");
 			stmt.close();
 			return true;
 		} catch (Exception e) {
@@ -154,14 +144,6 @@ public class accessDataBase {
 		}
 		return false;
 	}
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
-=======
->>>>>>> parent of d8b6032 (date format fixed)
-=======
->>>>>>> parent of 2806f77 (Merge pull request #7 from NAinfini/Daniel)
 	//get next empty ID for dynamic allocation
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -325,36 +307,15 @@ public class accessDataBase {
 		return "";
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
-=======
-	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
->>>>>>> Stashed changes
-=======
-	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
->>>>>>> Stashed changes
-=======
 	void bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
->>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
-=======
-	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
->>>>>>> parent of d8b6032 (date format fixed)
-=======
-	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
->>>>>>> parent of 2806f77 (Merge pull request #7 from NAinfini/Daniel)
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
-			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, date) \r\n"
-					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\');"); 
-			stmt.executeUpdate("INSERT INTO hotel.customer(person_id, payment_info) \r\n"
-					+ "VALUES ("+userID+",\'"+paymentMethod+"\');"); 
+			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, check_in,check_out) \r\n"
+					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\',\'"+checkOutDate+"\');"); 
+			stmt.executeUpdate("UPDATE hotel.customer set payment_info = \'"+paymentMethod+"\' where person_id = \'"+userID+"\'; \r\n"); 
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -445,40 +406,4 @@ public class accessDataBase {
 		System.out.println("Empty address id");
 		return "";
 	}
-	
-	// Get the first name and last name	
-		String[] getFullName(int booking_id) {
-			
-			// variable result is an array that stores first_name and last_name
-			// first_name is of index 0
-			// last_name is of index 1
-			String[] result = new String[2];
-			
-			
-			try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
-				stmt = conn.createStatement();	
-				ResultSet rs;
-				
-				// Get first name
-				rs = stmt.executeQuery("SELECT p.first_name FROM hotel.person p "
-						+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
-				if(rs.next()) {
-					result[0] = rs.getString(1).toString();
-				}
-				
-				// Get last name
-				rs = stmt.executeQuery("SELECT p.last_name FROM hotel.person p "
-						+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
-				if(rs.next()) {
-					result[1] = rs.getString(1).toString();
-				}
-				
-				stmt.close();
-				return result;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.print("Something went wrong with the password, please try again\n"); 
-			return null;
-		}
 }
