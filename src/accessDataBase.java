@@ -277,14 +277,14 @@ public class accessDataBase {
 		return "";
 	}
 	
-	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+	void bookRoom(int hotelID,String userName,String check_in, String check_out, String paymentMethod) {
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
-			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, date) \r\n"
-					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\');"); 
+			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, check_in, check_out) \r\n"
+					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+check_in+"\'"+",\'"+check_out+"\');"); 
 			stmt.executeUpdate("INSERT INTO hotel.customer(person_id, payment_info) \r\n"
 					+ "VALUES ("+userID+",\'"+paymentMethod+"\');"); 
 			stmt.close();

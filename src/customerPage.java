@@ -116,19 +116,19 @@ public class customerPage {
 	private void bookRoom() {
 		boolean proceed = false;
 		String checkInDate = "";
-		String checkOutDate;
+		String checkOutDate ="";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
 		while(!proceed) {
-			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
+			System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
 			checkInDate = myObj.nextLine();
 			System.out.print("You have checked in on the "+checkInDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
 		proceed = false;
 		while(!proceed) {
-			System.out.print("You have successfully checked in, now choose you check-out date: (dd/mm/yyyy)\n");
+			System.out.print("You have successfully checked in, now choose you check-out date: (yyyy-mm-dd)\n");
 			checkOutDate = myObj.nextLine();
 			System.out.print("You have checked out on the "+checkOutDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
@@ -145,6 +145,6 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
 	}
 }
