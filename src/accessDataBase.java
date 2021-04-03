@@ -1,5 +1,7 @@
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class accessDataBase {
 	private static accessDataBase dataBase = null;
 	private Statement stmt;
@@ -114,6 +116,35 @@ public class accessDataBase {
 		}
 	}
 	
+<<<<<<< Updated upstream
+=======
+	boolean addCustomer(String personID) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO hotel.customer(person_id) \r\n"
+					+ "VALUES ("+personID+");");
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	boolean addEmployee(String personID) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+		LocalDateTime currentDate = LocalDateTime.now();  
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO hotel.employee(person_id,registation_date) \r\n"
+					+ "VALUES ("+personID+"," + dtf.format(currentDate) +");");
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+>>>>>>> Stashed changes
 	//get next empty ID for dynamic allocation
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -277,7 +308,11 @@ public class accessDataBase {
 		return "";
 	}
 	
+<<<<<<< Updated upstream
 	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+=======
+	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
+>>>>>>> Stashed changes
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
@@ -288,10 +323,11 @@ public class accessDataBase {
 			stmt.executeUpdate("INSERT INTO hotel.customer(person_id, payment_info) \r\n"
 					+ "VALUES ("+userID+",\'"+paymentMethod+"\');"); 
 			stmt.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		return false;
 	}
 	
 	String getRoomID(int hotelID, String idName){
