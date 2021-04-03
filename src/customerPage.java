@@ -115,36 +115,208 @@ public class customerPage {
 	
 	private void bookRoom() {
 		boolean proceed = false;
+		boolean checkInValid = false;
+		boolean checkOutValid = false;
+		boolean datesMatch = false;
 		String checkInDate = "";
 		String checkOutDate ="";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
 		while(!proceed) {
-			System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
-			checkInDate = myObj.nextLine();
+			while(!checkInValid) {
+				System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
+				checkInDate = myObj.nextLine().trim();
+				checkInValid = isValidDate(checkInDate);
+			}
 			System.out.print("You have checked in on the "+checkInDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
 		proceed = false;
 		while(!proceed) {
 			System.out.print("You have successfully checked in, now choose you check-out date: (yyyy-mm-dd)\n");
-			checkOutDate = myObj.nextLine();
+			while(!datesMatch) {
+				checkOutDate = myObj.nextLine().trim();
+				checkOutValid = isValidDate(checkOutDate);
+				if(checkOutValid) {
+					datesMatch = isAfter(checkInDate, checkOutDate);
+				}
+			}
 			System.out.print("You have checked out on the "+checkOutDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
 		proceed = false;
 		do {
 			System.out.print("Would you like to pay online OR in person ? (online/person)\n");
-			paymentMethod = myObj.nextLine();
+			paymentMethod = myObj.nextLine().toLowerCase().trim();
 		}while(!paymentMethod.equals("online")&&!paymentMethod.equals("person"));
 		
 		while(!proceed) {
-			System.out.print("Please insert you credit card number\n");
-			credit = myObj.nextLine();
-			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
-			proceed =  myObj.nextLine().equals("yes");
+			System.out.print("Please insert your credit card number: \n");
+			credit = myObj.nextLine().trim();
+			System.out.print("You have entered this credit card number: "+credit+", do you confirm this? (yes/no)\n");
+			proceed =  (myObj.nextLine().toLowerCase().trim()).equals("yes");
 		}
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
+		
+		// Check if the submission was successful
+		try {
+			accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
+			System.out.print("Your booking was successfully submited!");
+			System.exit(0);
+		} catch (Exception e) {
+			System.out.print("Sorry, there was an error on our end, please try again later.");
+		}
 	}
+	
+
+	/**
+	 * Verifies if the date of check-out is after the day of check-out 
+	 * @param check_in date
+	 * @param check_out date
+	 * @return true if valid
+	 */
+	public static boolean isAfter(String check_in, String check_out) {
+        
+        // Integer values of check_in
+        int yearIn = Integer.parseInt(check_in.substring(0,4));
+        int monthIn = Integer.parseInt(check_in.substring(5,7));
+        int dayIn = Integer.parseInt(check_in.substring(8,10));
+        
+        // Integer values of check_out
+        int yearOut = Integer.parseInt(check_out.substring(0,4));
+        int monthOut = Integer.parseInt(check_out.substring(5,7));
+        int dayOut = Integer.parseInt(check_out.substring(8,10));
+        
+        
+        // Check if year is valid
+        if(yearOut < yearIn) {
+            System.out.println("Year can not be less than the check-in date. Please try again.");
+            return false;
+        } else if(yearOut == yearIn) {
+            // Now check for the month
+            if(monthOut < monthIn) {
+                System.out.println("Month can not be less than the check-in date. Please try again.");
+                return false;
+            } else if(monthOut == monthIn) {
+                // Now check for the day
+                if(dayOut < dayIn) {
+                    System.out.println("Day can not be less than the check-in date. Please try again.");
+                    return false;
+                } else if(dayOut == dayIn) {
+                    System.out.println("You have to check for at least one day. Please try again.");
+                    return false;
+                }
+            }
+        }
+        
+        // All tests passed successfully
+        return true;
+        
+    }
+     
+
+	/**
+	 *  Validate if the date inserted by the user is valid or not
+	 * @param value to validate
+	 * @return true if valid
+	 */
+    public static boolean isValidDate(String value) {
+        
+        // Check the length of date is acceptable
+        if(value.length() != 10 ) {
+            System.out.println("Please make sure you used the format yyyy-mm-dd.");
+            System.out.println("Please add '0' if the month or day is less then 10, example 04 for April.");
+            return false;
+        }
+        
+        // Check is the format has '-' in it
+        if(!value.substring(4,5).equals("-") || !value.substring(7,8).equals("-")) {
+            System.out.println("Please make sure you used the format yyyy-mm-dd.");
+            System.out.println("Please make sure to use the 'Hyphen : - ' when inserting the date.");
+            return false;
+        }
+        
+        // Values of the date
+        String year = value.substring(0,4);
+        String month = value.substring(5,7);
+        String day = value.substring(8,10);
+        
+        // Check if all vars are integers
+        if(!isInteger(year)) {
+            System.out.println("Please make sure that Year is a valid number.");
+            return false;
+        }
+        if(!isInteger(month)) {
+            System.out.println("Please make sure that Month is a valid number.");
+            return false;
+        }
+        if(!isInteger(day)) {
+            System.out.println("Please make sure that day is a valid number.");
+            return false;
+        }
+        
+        // Integer values of dates
+        int yearINT = Integer.parseInt(year);
+        int monthINT = Integer.parseInt(month);
+        int dayINT = Integer.parseInt(day);
+        
+        // Check if all vars are greater than 0
+        if(yearINT < 0) {
+            System.out.println("Please make sure that Year is a valid number.");
+            return false;
+        }
+        if(monthINT < 0) {
+            System.out.println("Please make sure that Month is a valid number.");
+            return false;
+        }
+        if(dayINT < 0) {
+            System.out.println("Please make sure that day is a valid number.");
+            return false;
+        }
+        
+        //check if dates are in range
+        if(yearINT < 2021){
+            System.out.println("Please make sure that Year is in range.");
+            return false;
+        }
+        if(monthINT < 1 || monthINT > 12){
+            System.out.println("Please make sure that Month is between 1 and 12.");
+            return false;
+        }
+        if(dayINT < 1 || dayINT > 31){
+            System.out.println("Please make sure that Day is between 1 and 31.");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Helper function used to verifies if the number is an integer
+     * @param str value to compare with
+     * @return true if str is an integer
+     */
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
 }
