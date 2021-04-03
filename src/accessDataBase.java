@@ -1,5 +1,7 @@
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class accessDataBase {
 	private static accessDataBase dataBase = null;
 	private Statement stmt;
@@ -130,9 +132,11 @@ public class accessDataBase {
 	}
 	boolean addEmployee(String personID) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+			LocalDateTime now = LocalDateTime.now();
 			stmt = conn.createStatement();
-			stmt.executeUpdate("INSERT INTO hotel.employee(person_id) \r\n"
-					+ "VALUES ("+personID+");");
+			stmt.executeUpdate("INSERT INTO hotel.employee(person_id,registration_date) \r\n"
+					+ "VALUES ("+personID+",\'"+dtf.format(now)+"\');");
 			stmt.close();
 			return true;
 		} catch (Exception e) {
