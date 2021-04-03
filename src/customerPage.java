@@ -12,7 +12,10 @@ public class customerPage {
 		String userInput;
 		while(active) {
 			userInput = myObj.nextLine();
-			checkCommand(userInput);
+			if(userInput.length()>=1) {
+				checkCommand(userInput);
+			}
+			
 		}
 		
 	}
@@ -51,9 +54,11 @@ public class customerPage {
 		  		}
 		  		if(brandID == 0) {
 		  			brandID = integerIForID;
+		  			System.out.print("You are at brand ID = " + integerIForID+"\n"); 
 		  			displayHotels();
 		  		}else if(hotelID == 0) {
 		  			hotelID = integerIForID;
+		  			System.out.print("You are at hotel ID = " + integerIForID+"\n"); 
 		  		}else {
 		  			System.out.print("can not go deeper\n"); 
 		  		}
@@ -68,6 +73,7 @@ public class customerPage {
 			    	System.out.print("can not go back more\n"); 
 			    }else if (hotelID == 0) {
 			    	displayBrands();
+			    	System.out.print("You are at brand ID = " + brandID+"\n"); 
 			    	brandID = 0;
 			    }else {
 			    	displayHotels();
@@ -109,12 +115,11 @@ public class customerPage {
 	
 	private void bookRoom() {
 		boolean proceed = false;
-		String checkInDate;
+		String checkInDate = "";
 		String checkOutDate;
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
-		String userInput;
 		while(!proceed) {
 			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
 			checkInDate = myObj.nextLine();
@@ -131,13 +136,15 @@ public class customerPage {
 		proceed = false;
 		do {
 			System.out.print("Would you like to pay online OR in person ? (online/person)\n");
-			checkInDate = myObj.nextLine();
-		}while(!paymentMethod.equals("online")||!paymentMethod.equals("person"));
+			paymentMethod = myObj.nextLine();
+		}while(!paymentMethod.equals("online")&&!paymentMethod.equals("person"));
+		
 		while(!proceed) {
 			System.out.print("Please insert you credit card number\n");
 			credit = myObj.nextLine();
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
 	}
 }

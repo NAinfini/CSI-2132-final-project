@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class mainProgram {
 	private boolean loginDone = false;
+	public static String userName;
 	 public static void main(String args[]) {
 		 mainProgram program = new mainProgram();
 		 program.loginProcess();
@@ -10,7 +11,6 @@ public class mainProgram {
 	 }
 	 //log in process
 	 private void loginProcess() {
-		 String userName;
 		 Scanner myObj = new Scanner(System.in);
 		 System.out.print("Hello, welcome to the hotel thingy.\n"); 
 		 while(!loginDone) {
