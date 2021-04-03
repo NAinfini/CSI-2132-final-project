@@ -88,6 +88,7 @@ public class customerPage {
 		  		}
 		  		break;
 		  	case "exit":
+		  		active = false;
 		  		System.exit(0);
 		  		break;
 		  	default:
@@ -120,6 +121,7 @@ public class customerPage {
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
+		//not protected against invalid dates
 		while(!proceed) {
 			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
 			checkInDate = myObj.nextLine();
