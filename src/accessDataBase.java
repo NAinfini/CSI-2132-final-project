@@ -303,7 +303,7 @@ public class accessDataBase {
 		return "";
 	}
 	
-	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
+	void bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
@@ -313,11 +313,10 @@ public class accessDataBase {
 					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\',\'"+checkOutDate+"\');"); 
 			stmt.executeUpdate("UPDATE hotel.customer set payment_info = \'"+paymentMethod+"\' where person_id = \'"+userID+"\'; \r\n"); 
 			stmt.close();
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		
 	}
 	
 	String getRoomID(int hotelID, String idName){
