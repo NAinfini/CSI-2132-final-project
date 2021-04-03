@@ -101,7 +101,7 @@ public class accessDataBase {
 		return "";
 	}
 	//add current user to database, uses registerAddress
-	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
+	String registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
 		String personID = getNextIndex("hotel.person","person_id");
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -109,11 +109,37 @@ public class accessDataBase {
 			stmt.executeUpdate("INSERT INTO hotel.person(person_id,hotel_id, first_name, last_name, address_id, sin, username, password) \r\n"
 					+ "VALUES ("+personID+","+hotel_ID+ ",\'" +firstName+ "\',\'" +lastName+ "\'," +address+ "," +sin+ ",\'" +username+ "\',\'" +password+"\');"); 
 			stmt.close();
+			return personID;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return personID;
 	}
 	
+	boolean addCustomer(String personID) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO hotel.customer(person_id) \r\n"
+					+ "VALUES ("+personID+");");
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	boolean addEmployee(String personID) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();
+			stmt.executeUpdate("INSERT INTO hotel.employee(person_id) \r\n"
+					+ "VALUES ("+personID+");");
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	//get next empty ID for dynamic allocation
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -277,16 +303,15 @@ public class accessDataBase {
 		return "";
 	}
 	
-	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+	void bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
 			stmt = conn.createStatement();	
-			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, date) \r\n"
-					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\');"); 
-			stmt.executeUpdate("INSERT INTO hotel.customer(person_id, payment_info) \r\n"
-					+ "VALUES ("+userID+",\'"+paymentMethod+"\');"); 
+			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, check_in,check_out) \r\n"
+					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\',\'"+checkOutDate+"\');"); 
+			stmt.executeUpdate("UPDATE hotel.customer set payment_info = \'"+paymentMethod+"\' where person_id = \'"+userID+"\'; \r\n"); 
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
