@@ -123,14 +123,14 @@ public class customerPage {
 		Scanner myObj = new Scanner(System.in);
 		//not protected against invalid dates
 		while(!proceed) {
-			System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
+			System.out.print("Choose your checking date: (dd/mm/yyyy)\n");
 			checkInDate = myObj.nextLine();
 			System.out.print("You have checked in on the "+checkInDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
 		proceed = false;
 		while(!proceed) {
-			System.out.print("You have successfully checked in, now choose you check-out date: (yyyy-mm-dd)\n");
+			System.out.print("You have successfully checked in, now choose you check-out date: (dd/mm/yyyy)\n");
 			checkOutDate = myObj.nextLine();
 			System.out.print("You have checked out on the "+checkOutDate+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
@@ -147,6 +147,7 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -166,6 +167,9 @@ public class customerPage {
 =======
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
 >>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
+=======
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
+>>>>>>> parent of d8b6032 (date format fixed)
 	}
 
 

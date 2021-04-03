@@ -1,7 +1,5 @@
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 public class accessDataBase {
 	private static accessDataBase dataBase = null;
 	private Statement stmt;
@@ -119,6 +117,7 @@ public class accessDataBase {
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
@@ -160,6 +159,8 @@ public class accessDataBase {
 >>>>>>> Stashed changes
 =======
 >>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
+=======
+>>>>>>> parent of d8b6032 (date format fixed)
 	//get next empty ID for dynamic allocation
 	String getNextIndex(String table, String idName) {
 		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
@@ -324,6 +325,7 @@ public class accessDataBase {
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
@@ -336,6 +338,9 @@ public class accessDataBase {
 =======
 	void bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
 >>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
+=======
+	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+>>>>>>> parent of d8b6032 (date format fixed)
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
 		String userID = getUserID(userName);
@@ -345,11 +350,10 @@ public class accessDataBase {
 					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\',\'"+checkOutDate+"\');"); 
 			stmt.executeUpdate("UPDATE hotel.customer set payment_info = \'"+paymentMethod+"\' where person_id = \'"+userID+"\'; \r\n"); 
 			stmt.close();
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		
 	}
 	
 	String getRoomID(int hotelID, String idName){
