@@ -87,7 +87,19 @@ public class accessDataBase {
 		}
 		return addressID;
 	}
-	
+	String getUserID(String userName) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("SELECT person_id FROM hotel.person where username = \'"+ userName+ "\';");
+			if(rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 	//add current user to database, uses registerAddress
 	void registerUser(String hotel_ID, String firstName, String lastName, String address, String sin,
 			String username, String password){
@@ -265,5 +277,104 @@ public class accessDataBase {
 		return "";
 	}
 	
+	void bookRoom(int hotelID,String userName,String date,String paymentMethod) {
+		String bookingID = getBookingID(hotelID,"booking_id");
+		String roomNum =  getRoomID(hotelID,"room_number");
+		String userID = getUserID(userName);
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			stmt.executeUpdate("INSERT INTO hotel.booking(booking_id,hotel_id, room_number,person_id, date) \r\n"
+					+ "VALUES ("+bookingID+","+hotelID+ "," +roomNum+","+userID+",\'"+date+"\');"); 
+			stmt.executeUpdate("INSERT INTO hotel.customer(person_id, payment_info) \r\n"
+					+ "VALUES ("+userID+",\'"+paymentMethod+"\');"); 
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
+	String getRoomID(int hotelID, String idName){
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("	SELECT  "+idName+"\r\n"
+					+ "	FROM    (\r\n"
+					+ "	        SELECT  1 AS "+idName+"\r\n"
+					+ "	        ) q1\r\n"
+					+ "	WHERE   NOT EXISTS\r\n"
+					+ "	        (\r\n"
+					+ "	        SELECT  1\r\n"
+					+ "	        FROM    (SELECT * FROM hotel.room where hotel_id ="+hotelID+")q3\r\n"
+					+ "	        WHERE   "+idName+" = 1\r\n"
+					+ "	        )\r\n"
+					+ "	UNION ALL\r\n"
+					+ "	SELECT  *\r\n"
+					+ "	FROM    (\r\n"
+					+ "	        SELECT  "+idName+" + 1\r\n"
+					+ "	        FROM    (SELECT * FROM hotel.room where hotel_id ="+hotelID+") t\r\n"
+					+ "	        WHERE   NOT EXISTS\r\n"
+					+ "	                (\r\n"
+					+ "	                SELECT  1\r\n"
+					+ "	                FROM    (SELECT * FROM hotel.room where hotel_id =" +hotelID+") ti\r\n"
+					+ "	                WHERE   ti."+idName+" = t."+idName+" + 1\r\n"
+					+ "	                )\r\n"
+					+ "	        ORDER BY\r\n"
+					+ "	        	"+idName+"\r\n"
+					+ "	        LIMIT 1\r\n"
+					+ "	        ) q2\r\n"
+					+ "	ORDER BY\r\n"
+					+ "		"+idName+"\r\n"
+					+ "	LIMIT 1");
+			if (rs.next()) {
+				return rs.getString(1).toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Empty address id");
+		return "";
+	}
+	
+	String getBookingID(int hotelID, String idName) {
+		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+			stmt = conn.createStatement();	
+			ResultSet rs;
+			rs = stmt.executeQuery("	SELECT  "+idName+"\r\n"
+					+ "	FROM    (\r\n"
+					+ "	        SELECT  1 AS "+idName+"\r\n"
+					+ "	        ) q1\r\n"
+					+ "	WHERE   NOT EXISTS\r\n"
+					+ "	        (\r\n"
+					+ "	        SELECT  1\r\n"
+					+ "	        FROM    (SELECT * FROM hotel.booking where hotel_id ="+hotelID+")q3\r\n"
+					+ "	        WHERE   "+idName+" = 1\r\n"
+					+ "	        )\r\n"
+					+ "	UNION ALL\r\n"
+					+ "	SELECT  *\r\n"
+					+ "	FROM    (\r\n"
+					+ "	        SELECT  "+idName+" + 1\r\n"
+					+ "	        FROM    (SELECT * FROM hotel.booking where hotel_id ="+hotelID+") t\r\n"
+					+ "	        WHERE   NOT EXISTS\r\n"
+					+ "	                (\r\n"
+					+ "	                SELECT  1\r\n"
+					+ "	                FROM    (SELECT * FROM hotel.booking where hotel_id ="+hotelID+") ti\r\n"
+					+ "	                WHERE   ti."+idName+" = t."+idName+" + 1\r\n"
+					+ "	                )\r\n"
+					+ "	        ORDER BY\r\n"
+					+ "	        	"+idName+"\r\n"
+					+ "	        LIMIT 1\r\n"
+					+ "	        ) q2\r\n"
+					+ "	ORDER BY\r\n"
+					+ "		"+idName+"\r\n"
+					+ "	LIMIT 1");
+			if (rs.next()) {
+				return rs.getString(1).toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Empty address id");
+		return "";
+	}
 }
