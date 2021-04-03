@@ -116,7 +116,7 @@ public class customerPage {
 	private void bookRoom() {
 		boolean proceed = false;
 		String checkInDate = "";
-		String checkOutDate;
+		String checkOutDate = "";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
@@ -145,6 +145,8 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
 	}
+
+
 }
