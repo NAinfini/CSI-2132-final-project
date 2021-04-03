@@ -116,7 +116,7 @@ public class customerPage {
 	private void bookRoom() {
 		boolean proceed = false;
 		String checkInDate = "";
-		String checkOutDate = "";
+		String checkOutDate;
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
@@ -147,6 +147,7 @@ public class customerPage {
 		}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
@@ -168,7 +169,8 @@ public class customerPage {
 =======
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
 >>>>>>> parent of d8b6032 (date format fixed)
+=======
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
+>>>>>>> parent of 2806f77 (Merge pull request #7 from NAinfini/Daniel)
 	}
-
-
 }

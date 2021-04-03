@@ -73,7 +73,6 @@ public class mainProgram {
 		 String province= null;
 		 String country= null;
 		 String postal= null;
-		 String userType = null;
 		 Scanner myObj = new Scanner(System.in);
 		 while(!inputValid || !inputNotNull || !userNameValid || !hotelIDValid) {
 			 System.out.print("enter hotel id here: \n"); 
@@ -102,10 +101,6 @@ public class mainProgram {
 			 country = myObj.nextLine();
 			 System.out.print("enter postal here: \n"); 
 			 postal = myObj.nextLine();
-			 do {
-				 System.out.print("enter type of accouunt here: (customer, employee)\n"); 
-				 userType = myObj.nextLine();
-			 }while(!userType.equals("customer") && !userType.equals("employee"));
 			 if(isInteger(sin) && isInteger(hotel_ID) && isInteger(aptNumber) && isInteger(streetNum)) {
 				 inputValid=true;
 			 }else {
@@ -130,16 +125,9 @@ public class mainProgram {
 		 }
 		 
 		 try {
-			 String userID =accessDataBase.getInstance().registerUser(hotel_ID,firstName,lastName,
+			 accessDataBase.getInstance().registerUser(hotel_ID,firstName,lastName,
 					 accessDataBase.getInstance().registerAddress(aptNumber,streetNum,streetName,city,province,country,postal)
 					 ,sin,username,password);
-			 if(userType.equals("customer")) {
-				 addCustomer(userID);
-			 }else if (userType.equals("employee")) {
-				 addEmployee(userID);
-			 }else {
-				 System.out.print("How did you bypass the user type check? it is impossible ot get here\n"); 
-			 }
 			 return true;
 		 }catch(Exception e) {
 			 System.out.print("Something went wrong creating account\n"); 
@@ -178,15 +166,4 @@ public class mainProgram {
 		 return accessDataBase.getInstance().validatePassword(username,password);
 	 }
 
-	 private void addCustomer(String userID) {
-		 if(accessDataBase.getInstance().addCustomer(userID)) {
-			 System.out.print("Successfulyl added as a customer\n"); 
-		 }
-	 }
-	 private void addEmployee(String userID) {
-		 if(accessDataBase.getInstance().addEmployee(userID)) {
-			 System.out.print("Successfulyl added as an employee\n"); 
-		 }
-		 
-	 } 
 }
