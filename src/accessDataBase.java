@@ -377,4 +377,40 @@ public class accessDataBase {
 		System.out.println("Empty address id");
 		return "";
 	}
+	
+	// Get the first name and last name	
+		String[] getFullName(int booking_id) {
+			
+			// variable result is an array that stores first_name and last_name
+			// first_name is of index 0
+			// last_name is of index 1
+			String[] result = new String[2];
+			
+			
+			try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
+				stmt = conn.createStatement();	
+				ResultSet rs;
+				
+				// Get first name
+				rs = stmt.executeQuery("SELECT p.first_name FROM hotel.person p "
+						+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
+				if(rs.next()) {
+					result[0] = rs.getString(1).toString();
+				}
+				
+				// Get last name
+				rs = stmt.executeQuery("SELECT p.last_name FROM hotel.person p "
+						+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
+				if(rs.next()) {
+					result[1] = rs.getString(1).toString();
+				}
+				
+				stmt.close();
+				return result;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.print("Something went wrong with the password, please try again\n"); 
+			return null;
+		}
 }
