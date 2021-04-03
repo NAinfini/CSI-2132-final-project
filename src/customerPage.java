@@ -89,6 +89,7 @@ public class customerPage {
 		  		break;
 		  	case "exit":
 		  		active = false;
+		  		System.out.print("Good bye, exiting now.\n"); 
 		  		System.exit(0);
 		  		break;
 		  	default:

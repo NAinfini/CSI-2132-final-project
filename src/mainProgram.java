@@ -185,7 +185,7 @@ public class mainProgram {
 	 }
 	 private void addEmployee(String userID) {
 		 if(accessDataBase.getInstance().addEmployee(userID)) {
-			 System.out.print("Successfulyl added as an employee\n"); 
+			 System.out.print("Successfully added as an employee\n"); 
 		 }
 		 
 	 } 
