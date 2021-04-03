@@ -20,7 +20,7 @@ public class accessDataBase {
 				conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe");
 				stmt = conn.createStatement();
 			}while(conn.isClosed());
-				
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +105,7 @@ public class accessDataBase {
 		}
 		return personID;
 	}
-	
+	//add person as cutomer/employee
 	boolean addCustomer(String personID) {
 		try{
 			stmt.executeUpdate("INSERT INTO hotel.customer(person_id) \r\n"
@@ -235,7 +235,7 @@ public class accessDataBase {
 		}
 		return "";
 	}
-	
+	//return all hotel in brand as a string
 	String getHotels(int brandID) {
 		try{
 			String result = "";
@@ -268,7 +268,7 @@ public class accessDataBase {
 		}
 		return "";
 	}
-	
+	//book a room and add it in booking table
 	boolean bookRoom(int hotelID,String userName,String date,String checkOutDate,String paymentMethod) {
 		String bookingID = getBookingID(hotelID,"booking_id");
 		String roomNum =  getRoomID(hotelID,"room_number");
@@ -283,7 +283,7 @@ public class accessDataBase {
 		}
 		return false;
 	}
-	
+	//return next empty roomID
 	String getRoomID(int hotelID, String idName){
 		try{
 			rs = stmt.executeQuery("	SELECT  "+idName+"\r\n"
@@ -323,7 +323,7 @@ public class accessDataBase {
 		System.out.println("Empty address id");
 		return "";
 	}
-	
+	//returrn next empty bookingID
 	String getBookingID(int hotelID, String idName) {
 		try{
 			rs = stmt.executeQuery("	SELECT  "+idName+"\r\n"
