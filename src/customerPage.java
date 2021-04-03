@@ -89,10 +89,11 @@ public class customerPage {
 		  		break;
 		  	case "exit":
 		  		active = false;
+		  		System.out.print("Good bye, exiting now.\n"); 
 		  		System.exit(0);
 		  		break;
 		  	default:
-		    
+		  		System.out.print("Ive never seen that command in my entire life.\n"); 
 		}
 	}
 	
@@ -147,7 +148,12 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
+		if(accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod)) {
+			System.out.print("booking successful\n");
+		}else {
+			System.out.print("booking failed\n");
+		}
+		
 	}
 
 
