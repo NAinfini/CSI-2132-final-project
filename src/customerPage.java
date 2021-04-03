@@ -88,6 +88,7 @@ public class customerPage {
 		  		}
 		  		break;
 		  	case "exit":
+		  		active = false;
 		  		System.exit(0);
 		  		break;
 		  	default:
@@ -116,10 +117,11 @@ public class customerPage {
 	private void bookRoom() {
 		boolean proceed = false;
 		String checkInDate = "";
-		String checkOutDate;
+		String checkOutDate = "";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
+		//not protected against invalid dates
 		while(!proceed) {
 			System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
 			checkInDate = myObj.nextLine();
@@ -145,6 +147,7 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
@@ -160,5 +163,10 @@ public class customerPage {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
+>>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
 	}
+
+
 }
