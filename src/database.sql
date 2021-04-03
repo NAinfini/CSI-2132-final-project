@@ -134,7 +134,8 @@ CREATE TABLE Booking(
     Hotel_ID INT NOT NULL,
     Room_number INT NOT NULL,
     Person_ID INT NOT NULL,
-    Date DATE,
+    Date check_in NOT NULL,
+    Date check_out NOT NULL,
     CONSTRAINT pk_booking PRIMARY KEY (Booking_ID),
     CONSTRAINT fk_Person FOREIGN KEY (Person_ID)
         REFERENCES Person (Person_ID)
