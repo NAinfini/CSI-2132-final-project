@@ -117,7 +117,7 @@ public class customerPage {
 	private void bookRoom() {
 		boolean proceed = false;
 		String checkInDate = "";
-		String checkOutDate;
+		String checkOutDate = "";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
@@ -147,32 +147,8 @@ public class customerPage {
 			System.out.print("You have entered:"+credit+", do you confirm this? (yes/no)\n");
 			proceed =  myObj.nextLine().equals("yes");
 		}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
-=======
-=======
->>>>>>> Stashed changes
-		if(accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod)) {
-			System.out.print("booking successful\n");
-		}else {
-			System.out.print("booking failed\n");
-		}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
 		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,checkOutDate,paymentMethod);
->>>>>>> a6cd17fae0e20fd857eb34fb40e014d0592759a5
-=======
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
->>>>>>> parent of d8b6032 (date format fixed)
-=======
-		accessDataBase.getInstance().bookRoom(hotelID,mainProgram.userName,checkInDate,paymentMethod);
->>>>>>> parent of 2806f77 (Merge pull request #7 from NAinfini/Daniel)
 	}
+
+
 }
