@@ -346,10 +346,7 @@ public class accessDataBase {
 		String[] result = new String[2];
 
 
-		try(Connection conn = DriverManager.getConnection("jdbc:postgresql://web0.site.uottawa.ca:15432/group_b04_g07","msui005","Z4321zxeZ4321zxe")){
-			stmt = conn.createStatement();	
-			ResultSet rs;
-
+		try {
 			// Get first name
 			rs = stmt.executeQuery("SELECT p.first_name FROM hotel.person p "
 					+ "WHERE p.person_id = (SELECT b.person_ID FROM hotel.booking b WHERE b.booking_id ="+ booking_id +") ");
@@ -364,12 +361,53 @@ public class accessDataBase {
 				result[1] = rs.getString(1).toString();
 			}
 
-			stmt.close();
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.print("Something went wrong with the password, please try again\n"); 
 		return null;
+	}
+	
+	/*
+	 * Transform the booking into a a renting 
+	 */
+	boolean transformToRenting(int booking) {
+		try {
+			stmt.executeUpdate("WITH sub AS (\r\n"
+					+ "		SELECT hotel_id, room_number, person_id, check_out, check_in FROM hotel.booking \r\n"
+					+ "		WHERE booking_id =" + booking + " \r\n"
+					+ "		)\r\n"
+					+ "		INSERT INTO hotel.renting(payment_id, hotel_id, room_number, check_out, check_in)\r\n"
+					+ "		VALUES ((SELECT person_id FROM sub),\r\n"
+					+ "			(SELECT hotel_id FROM sub),\r\n"
+					+ "			(SELECT room_number FROM sub),\r\n"
+					+ "			(SELECT check_out FROM sub),\r\n"
+					+ "			(SELECT check_in FROM sub));");
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/*
+	 * Transform the booking into a a renting 
+	 */
+	boolean createRenting(int person_id, int hotel_id, int room_number, String check_out, String check_in) {
+		try {
+			stmt.executeUpdate("INSERT INTO hotel.renting(payment_id, hotel_id, room_number, check_out, check_in)\r\n"
+					+ "		VALUES ( "+person_id +",\r\n"
+					+ "			"+hotel_id+",\r\n"
+					+ "			"+room_number+",\r\n"
+					+ "			\'"+check_out+"\',\r\n"
+					+ "			\'"+check_in+"\');");
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
