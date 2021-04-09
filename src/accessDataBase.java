@@ -203,29 +203,7 @@ public class accessDataBase {
 		try {
 			String result = "";
 			rs = stmt.executeQuery("SELECT * FROM hotel.parenthotel");
-			ResultSetMetaData rsMeta = rs.getMetaData();
-			int count = rsMeta.getColumnCount();
-			int i, j = 1;
-			result += "\n| ";
-			while (j <= count) {
-				String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
-				String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
-				result += formatedValue + "| ";
-				j++;
-			}
-			result += "\n" + new String(new char[result.length()]).replace("\0", "-");
-			while (rs.next()) {
-				i = 1;
-				result += "\n| ";
-				while (i <= count) {
-					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
-					result += formatedValue + "| ";
-					i++;
-				}
-			}
-			result += "\n";
-			return result;
+			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -237,29 +215,7 @@ public class accessDataBase {
 		try {
 			String result = "";
 			rs = stmt.executeQuery("SELECT * FROM hotel.hotel where brand_id = \'" + brandID + "\'");
-			ResultSetMetaData rsMeta = rs.getMetaData();
-			int count = rsMeta.getColumnCount();
-			int i, j = 1;
-			result += "\n| ";
-			while (j <= count) {
-				String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
-				String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
-				result += formatedValue + "| ";
-				j++;
-			}
-			result += "\n" + new String(new char[result.length()]).replace("\0", "-");
-			while (rs.next()) {
-				i = 1;
-				result += "\n| ";
-				while (i <= count) {
-					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
-					result += formatedValue + "| ";
-					i++;
-				}
-			}
-			result += "\n";
-			return result;
+			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -340,29 +296,7 @@ public class accessDataBase {
 		try {
 			String result = "";
 			rs = stmt.executeQuery(query);
-			ResultSetMetaData rsMeta = rs.getMetaData();
-			int count = rsMeta.getColumnCount();
-			int i, j = 1;
-			result += "\n| ";
-			while (j <= count) {
-				String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
-				String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
-				result += formatedValue + "| ";
-				j++;
-			}
-			result += "\n" + new String(new char[result.length()]).replace("\0", "-");
-			while (rs.next()) {
-				i = 1;
-				result += "\n| ";
-				while (i <= count) {
-					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
-					result += formatedValue + "| ";
-					i++;
-				}
-			}
-			result += "\n";
-			return result;
+			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
 			return e.toString();
 		}
@@ -438,37 +372,19 @@ public class accessDataBase {
 
 	public String searchByView(String input) {
 		try {
-			String result = "";
 			rs = stmt.executeQuery("Select * From room r \r\n"
 					+ "where room_view = \'"+input+"\'\r\n"
 					+ "and\r\n"
 					+ "not exists \r\n"
-					+ "     (Select * From booking\r\n"
+					+ "     (Select * From booking \r\n"
 					+ "      Where hotel_id = r.hotel_id\r\n"
-					+ "         And room_number = r.room_number);");
-			ResultSetMetaData rsMeta = rs.getMetaData();
-			int count = rsMeta.getColumnCount();
-			int i, j = 1;
-			result += "\n| ";
-			while (j <= count) {
-				String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
-				String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
-				result += formatedValue + "| ";
-				j++;
-			}
-			result += "\n" + new String(new char[result.length()]).replace("\0", "-");
-			while (rs.next()) {
-				i = 1;
-				result += "\n| ";
-				while (i <= count) {
-					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
-					result += formatedValue + "| ";
-					i++;
-				}
-			}
-			result += "\n";
-			return result;
+					+ "         And room_number = r.room_number)"
+					+ "and\r\n"
+					+ "not exists \r\n"
+					+ "			(Select * From renting \r\n"
+					+ "			 Where hotel_id = r.hotel_id\r\n"
+					+ "				And room_number = r.room_number);");
+			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
 			return e.toString();
 		}
@@ -476,37 +392,19 @@ public class accessDataBase {
 
 	public String searchByCap(int input) {
 		try {
-			String result = "";
 			rs = stmt.executeQuery("Select * From room r \r\n"
 					+ "where capacity >= "+input+"\r\n"
 					+ "and\r\n"
 					+ "not exists \r\n"
-					+ "     (Select * From booking\r\n"
+					+ "     (Select * From booking \r\n"
 					+ "      Where hotel_id = r.hotel_id\r\n"
-					+ "         And room_number = r.room_number);");
-			ResultSetMetaData rsMeta = rs.getMetaData();
-			int count = rsMeta.getColumnCount();
-			int i, j = 1;
-			result += "\n| ";
-			while (j <= count) {
-				String format = "%1$-" + rsMeta.getColumnDisplaySize(j) + "s";
-				String formatedValue = String.format(format, rsMeta.getColumnLabel(j));
-				result += formatedValue + "| ";
-				j++;
-			}
-			result += "\n" + new String(new char[result.length()]).replace("\0", "-");
-			while (rs.next()) {
-				i = 1;
-				result += "\n| ";
-				while (i <= count) {
-					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
-					result += formatedValue + "| ";
-					i++;
-				}
-			}
-			result += "\n";
-			return result;
+					+ "         And room_number = r.room_number)"
+					+ "and\r\n"
+					+ "not exists \r\n"
+					+ "			(Select * From renting \r\n"
+					+ "			 Where hotel_id = r.hotel_id\r\n"
+					+ "				And room_number = r.room_number);");
+			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
 			return e.toString();
 		}
@@ -514,15 +412,46 @@ public class accessDataBase {
 
 	public String searchByPrice(int input) {
 		try {
-			String result = "";
 			rs = stmt.executeQuery("Select * From room r \r\n"
 					+ "where price <= "+input+"\r\n"
 					+ "and\r\n"
 					+ "not exists \r\n"
-					+ "     (Select * From booking\r\n"
+					+ "     (Select * From booking \r\n"
 					+ "      Where hotel_id = r.hotel_id\r\n"
-					+ "         And room_number = r.room_number);");
-			ResultSetMetaData rsMeta = rs.getMetaData();
+					+ "         And room_number = r.room_number)"
+					+ "and\r\n"
+					+ "not exists \r\n"
+					+ "			(Select * From renting \r\n"
+					+ "			 Where hotel_id = r.hotel_id\r\n"
+					+ "				And room_number = r.room_number);");
+			return getStringFromRS(rs.getMetaData());
+		} catch (Exception e) {
+			return e.toString();
+		}
+	}
+
+	String displayRooms(int input) {
+		try {
+			rs = stmt.executeQuery("Select * From room r \r\n"
+					+ "where hotel_id = "+input+"\r\n"
+					+ "and\r\n"
+					+ "not exists \r\n"
+					+ "     (Select * From booking \r\n"
+					+ "      Where hotel_id = r.hotel_id\r\n"
+					+ "         And room_number = r.room_number)"
+					+ "and\r\n"
+					+ "not exists \r\n"
+					+ "			(Select * From renting \r\n"
+					+ "			 Where hotel_id = r.hotel_id\r\n"
+					+ "				And room_number = r.room_number);");
+			return getStringFromRS(rs.getMetaData());
+		} catch (Exception e) {
+			return e.toString();
+		}
+	}
+	private String getStringFromRS(ResultSetMetaData rsMeta) {
+		String result = "";
+		try {
 			int count = rsMeta.getColumnCount();
 			int i, j = 1;
 			result += "\n| ";
@@ -538,7 +467,7 @@ public class accessDataBase {
 				result += "\n| ";
 				while (i <= count) {
 					String format = "%1$-" + rsMeta.getColumnDisplaySize(i) + "s";
-					String formatedValue = String.format(format, new String(rs.getBytes(i), StandardCharsets.UTF_8));
+					String formatedValue = String.format(format, new String(rs.getBytes(i),StandardCharsets.UTF_8));
 					result += formatedValue + "| ";
 					i++;
 				}
@@ -548,5 +477,6 @@ public class accessDataBase {
 		} catch (Exception e) {
 			return e.toString();
 		}
+		
 	}
 }

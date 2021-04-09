@@ -55,6 +55,7 @@ public class customerPage {
 				} else if (hotelID == 0) {
 					hotelID = integerIForID;
 					System.out.print("You are at hotel ID = " + integerIForID + "\n");
+					displayRooms(integerIForID);
 				} else {
 					System.out.print("can not go deeper\n");
 				}
@@ -164,6 +165,10 @@ public class customerPage {
 		System.out.print(accessDataBase.getInstance().getHotels(brandID));
 	}
 
+	private void displayRooms(int input) {
+		System.out.print(accessDataBase.getInstance().displayRooms(input));
+	}
+	
 	private void bookRoom() {
 		
 		boolean proceed = false;
