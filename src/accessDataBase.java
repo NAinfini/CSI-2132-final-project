@@ -59,7 +59,6 @@ public class accessDataBase {
 		try {
 			String userID = getUserID(userInput);
 			rs = stmt.executeQuery("select * from hotel.customer where person_id = " + userID + " ;");
-			String result = "";
 			if (rs.next()) {
 				return "customer";
 			} else {
@@ -118,7 +117,7 @@ public class accessDataBase {
 		return personID;
 	}
 
-	// add person as cutomer/employee
+	// add person as customer/employee
 	boolean addCustomer(String personID) {
 		try {
 			stmt.executeUpdate("INSERT INTO hotel.customer(person_id) \r\n" + "VALUES (" + personID + ");");
@@ -181,7 +180,7 @@ public class accessDataBase {
 		return false;
 	}
 
-	// check if password matches username
+	// check if password matches user name
 	boolean validatePassword(String username, String password) {
 		try {
 			rs = stmt.executeQuery("SELECT password FROM hotel.person where username = \'" + username + "\';");
@@ -201,7 +200,6 @@ public class accessDataBase {
 	// return all brands as a string
 	String getBrands() {
 		try {
-			String result = "";
 			rs = stmt.executeQuery("SELECT * FROM hotel.parenthotel");
 			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
@@ -213,7 +211,6 @@ public class accessDataBase {
 	// return all hotel in brand as a string
 	String getHotels(int brandID) {
 		try {
-			String result = "";
 			rs = stmt.executeQuery("SELECT * FROM hotel.hotel where brand_id = \'" + brandID + "\'");
 			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
@@ -267,7 +264,7 @@ public class accessDataBase {
 		return "";
 	}
 
-	// returrn next empty bookingID
+	// return next empty bookingID
 	String getBookingID(int hotelID, String idName) {
 		try {
 			rs = stmt.executeQuery("	SELECT  " + idName + "\r\n" + "	FROM    (\r\n" + "	        SELECT  1 AS "
@@ -294,7 +291,6 @@ public class accessDataBase {
 	}
 	String customQuery(String query) {
 		try {
-			String result = "";
 			rs = stmt.executeQuery(query);
 			return getStringFromRS(rs.getMetaData());
 		} catch (Exception e) {
@@ -477,6 +473,5 @@ public class accessDataBase {
 		} catch (Exception e) {
 			return e.toString();
 		}
-		
 	}
 }

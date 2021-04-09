@@ -2,7 +2,6 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class employeePage {
-	private boolean active = true;
 	private boolean bookingVerification = false;
 	private boolean hasBooking = true;
 	private int Booking_ID;
@@ -253,9 +252,11 @@ public class employeePage {
 				 }else {
 					 System.out.print("How did you bypass the user type check? it is impossible ot get here\n"); 
 				 }
+				 myObj.close();
 				 return true;
 			 }catch(Exception e) {
 				 System.out.print("Something went wrong creating account\n"); 
+				 myObj.close();
 				 return false;
 			 }
 		 }
@@ -265,14 +266,12 @@ public class employeePage {
 		  */
 		 private void RentRoom() {
 				boolean proceed = false;
-				boolean checkInValid = false;
 				boolean checkOutValid = false;
 				boolean datesMatch = false;
 				int hotel_ID = 0;
 				int room_id = 0;
 				String checkInDate = "";
 				String checkOutDate = "";
-				String paymentMethod = "";
 				String credit;
 				Scanner myObj = new Scanner(System.in);
 				
@@ -320,7 +319,6 @@ public class employeePage {
 				}
 				
 				System.out.print("The payment method by default is in person\n");
-				paymentMethod = "person";
 				
 				proceed = false;
 				while (!proceed) {
@@ -337,8 +335,9 @@ public class employeePage {
 					System.out.print("Rent was successfully submited!");
 					System.exit(0);
 				} catch (Exception e) {
-					System.out.print("Sorry, there was an error on our end, please try again later.");
+					System.out.print("Sorry, there was an error on our end, please try again later."+e.toString());
 				}
+				myObj.close();
 			}
 		 
 		 /**

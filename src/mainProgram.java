@@ -34,17 +34,17 @@ public class mainProgram {
 				 System.out.print("login successfull.\n"); 
 				 if(getUserType(userName).equals("customer")) {
 					 loginDone = true;
-					 customerPage customer= new customerPage();
+					 new customerPage();
 					 
 				 }else if(getUserType(userName).equals("employee")) {
 					 loginDone = true;
-					 employeePage employee = new employeePage();
-					
+					 new employeePage();
 				 }else {
 					 System.out.print("Your type doesnt exist in database, something went wrong\n"); 
 				 }
 			 }
 		 }
+		 myObj.close();
 	 }
 	
 	 private boolean validateUserName(String userName) {
@@ -140,9 +140,11 @@ public class mainProgram {
 			 }else {
 				 System.out.print("How did you bypass the user type check? it is impossible ot get here\n"); 
 			 }
+			 myObj.close();
 			 return true;
 		 }catch(Exception e) {
-			 System.out.print("Something went wrong creating account\n"); 
+			 System.out.print("Something went wrong creating account :"+ e.toString()+"\n"); 
+			 myObj.close();
 			 return false;
 		 }
 		 

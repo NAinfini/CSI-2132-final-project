@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class customerPage {
 	private boolean active = true;
-	private String currentLevel = "parentHotel";
 	private int brandID = 0;
 	private int hotelID = 0;
 	private int roomID = 0;
@@ -17,6 +16,7 @@ public class customerPage {
 				checkCommand(userInput);
 			}
 		}
+		myObj.close();
 	}
 
 	private void checkCommand(String userInput) {
@@ -132,10 +132,9 @@ public class customerPage {
 	
 	private void doQuery() {
 		String userInput;
-			
+		Scanner myObj = new Scanner(System.in);
 		do {
 			System.out.print("please enter your query below and enter \'exitquery\' to exit:\n");
-			Scanner myObj = new Scanner(System.in);
 			userInput = myObj.nextLine();
 			if(!userInput.equals("exitquery")) {
 				System.out.print(accessDataBase.getInstance().customQuery(userInput)+"\n");
@@ -143,6 +142,8 @@ public class customerPage {
 			
 		}while(!userInput.equals("exitquery"));
 		System.out.print("exiting query\n");
+		myObj.close();
+		
 	}
 	
 	private void searchByView(String input) {
@@ -175,7 +176,6 @@ public class customerPage {
 		boolean checkInValid = false;
 		boolean checkOutValid = false;
 		boolean datesMatch = false;
-		int number;
 		String userInput;
 		String checkInDate = "";
 		String checkOutDate = "";
@@ -250,6 +250,7 @@ public class customerPage {
 		} catch (Exception e) {
 			System.out.print("Sorry, there was an error on our end, please try again later.");
 		}
+		myObj.close();
 	}
 
 	/**
