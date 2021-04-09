@@ -267,7 +267,7 @@ public class accessDataBase {
 	}
 
 	// book a room and add it in booking table
-	boolean bookRoom(int hotelID, String userName, String date, String checkOutDate, String paymentMethod) {
+	boolean bookRoom(int roomID,int hotelID, String userName, String date, String checkOutDate, String paymentMethod) {
 		String bookingID = getBookingID(hotelID, "booking_id");
 		String roomNum = getRoomID(hotelID, "room_number");
 		String userID = getUserID(userName);

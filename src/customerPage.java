@@ -16,9 +16,7 @@ public class customerPage {
 			if (userInput.length() >= 1) {
 				checkCommand(userInput);
 			}
-
 		}
-
 	}
 
 	private void checkCommand(String userInput) {
@@ -131,7 +129,7 @@ public class customerPage {
 		System.out.print("exit: exit program \n");
 	}
 	
-private void doQuery() {
+	private void doQuery() {
 		String userInput;
 			
 		do {
@@ -240,7 +238,7 @@ private void doQuery() {
 
 		// Check if the submission was successful
 		try {
-			accessDataBase.getInstance().bookRoom(hotelID, mainProgram.userName, checkInDate, checkOutDate,
+			accessDataBase.getInstance().bookRoom(roomID,hotelID, mainProgram.userName, checkInDate, checkOutDate,
 					paymentMethod);
 			System.out.print("Your booking was successfully submited!");
 			System.exit(0);
