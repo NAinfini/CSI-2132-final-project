@@ -5,7 +5,7 @@ public class customerPage {
 	private String currentLevel = "parentHotel";
 	private int brandID = 0;
 	private int hotelID = 0;
-
+	private int roomID = 0;
 	customerPage() {
 		System.out.print("hello, you logged in as a customer\n");
 		System.out.print("You can see all command lines by typing /help \n");
@@ -50,19 +50,20 @@ public class customerPage {
 		case "goto":
 			try {
 				integerIForID = Integer.parseInt(id);
+				if (brandID == 0) {
+					brandID = integerIForID;
+					System.out.print("You are at brand ID = " + integerIForID + "\n");
+					displayHotels();
+				} else if (hotelID == 0) {
+					hotelID = integerIForID;
+					System.out.print("You are at hotel ID = " + integerIForID + "\n");
+				} else {
+					System.out.print("can not go deeper\n");
+				}
 			} catch (NumberFormatException e) {
 				System.out.print("Please enter a valid id\n");
 			}
-			if (brandID == 0) {
-				brandID = integerIForID;
-				System.out.print("You are at brand ID = " + integerIForID + "\n");
-				displayHotels();
-			} else if (hotelID == 0) {
-				hotelID = integerIForID;
-				System.out.print("You are at hotel ID = " + integerIForID + "\n");
-			} else {
-				System.out.print("can not go deeper\n");
-			}
+			
 			break;
 		case "brands":
 			displayBrands();
@@ -82,16 +83,34 @@ public class customerPage {
 			}
 			break;
 		case "book":
-			if (hotelID == 0) {
-				System.out.print("Please goto a hotel first\n");
-			} else {
-				bookRoom();
-			}
+			bookRoom();
 			break;
 		case "exit":
 			active = false;
 			System.out.print("Good bye, exiting now.\n");
 			System.exit(0);
+			break;
+		case "query":
+			doQuery();
+			break;
+		case "view":
+			searchByView(id);
+			break;
+		case "price":
+			try {
+				integerIForID = Integer.parseInt(id);
+				searchByPrice(integerIForID);
+			} catch (NumberFormatException e) {
+				System.out.print("Please enter a valid id\n");
+			}
+			break;
+		case "cap":
+			try {
+				integerIForID = Integer.parseInt(id);
+				searchByCap(integerIForID);
+			} catch (NumberFormatException e) {
+				System.out.print("Please enter a valid id\n");
+			}
 			break;
 		default:
 			System.out.print("Ive never seen that command in my entire life.\n");
@@ -102,10 +121,41 @@ public class customerPage {
 		System.out.print("List of commands: \n");
 		System.out.print("help: display all commands\n");
 		System.out.print("brands: display all hotel brands \n");
-		System.out.print("goto: enter next level of directories with given id\n");
+		System.out.print("view: search by view type \n");
+		System.out.print("price: search by max price \n");
+		System.out.print("cap: search by max capacity \n");
+		System.out.print("goto: enter next level of directories with given id like brand id or hotel id\n");
 		System.out.print("back: go back a level in directory\n");
 		System.out.print("book: book a room in a hotel \n");
+		System.out.print("query: do a customer lookup query \n");
 		System.out.print("exit: exit program \n");
+	}
+	
+private void doQuery() {
+		String userInput;
+			
+		do {
+			System.out.print("please enter your query below and enter \'exitquery\' to exit:\n");
+			Scanner myObj = new Scanner(System.in);
+			userInput = myObj.nextLine();
+			if(!userInput.equals("exitquery")) {
+				System.out.print(accessDataBase.getInstance().customQuery(userInput)+"\n");
+			}
+			
+		}while(!userInput.equals("exitquery"));
+		System.out.print("exiting query\n");
+	}
+	
+	private void searchByView(String input) {
+		System.out.print(accessDataBase.getInstance().searchByView(input));
+	}
+	
+	private void searchByPrice(int input) {
+		System.out.print(accessDataBase.getInstance().searchByPrice(input));
+	}
+	
+	private void searchByCap(int input) {
+		System.out.print(accessDataBase.getInstance().searchByCap(input));
 	}
 
 	private void displayBrands() {
@@ -117,16 +167,41 @@ public class customerPage {
 	}
 
 	private void bookRoom() {
+		
 		boolean proceed = false;
 		boolean checkInValid = false;
 		boolean checkOutValid = false;
 		boolean datesMatch = false;
+		int number;
+		String userInput;
 		String checkInDate = "";
 		String checkOutDate = "";
 		String paymentMethod = "";
 		String credit;
 		Scanner myObj = new Scanner(System.in);
 		// not protected against invalid dates
+		while (!proceed) {
+			System.out.print("Enter the hotel ID:\n");
+			userInput = myObj.nextLine().trim();
+			try {
+				hotelID = Integer.parseInt(userInput);
+				proceed = true;
+			} catch (NumberFormatException e) {
+				System.out.print("Please enter a valid id\n");
+			}
+		}
+		proceed = false;
+		while (!proceed) {
+			System.out.print("Enter the room ID:\n");
+			userInput = myObj.nextLine().trim();
+			try {
+				roomID = Integer.parseInt(userInput);
+				proceed = true;
+			} catch (NumberFormatException e) {
+				System.out.print("Please enter a valid id\n");
+			}
+		}
+		proceed = false;
 		while (!proceed) {
 			while (!checkInValid) {
 				System.out.print("Choose your checking date: (yyyy-mm-dd)\n");
